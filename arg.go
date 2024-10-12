@@ -33,8 +33,8 @@ const (
 	F32Arg
 	F64Arg
 
-	IPv4Addr
-	IPv6Addr
+	IPv4AddrArg
+	IPv6AddrArg
 
 	// `[u8; 4]` array which represents an IPv4 address.
 	ArrU8Len4Arg

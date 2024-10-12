@@ -31,9 +31,9 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 		return formatFloat(hint, math.Float32frombits(binary.LittleEndian.Uint32(v)))
 	case F64Arg:
 		return formatFloat(hint, math.Float64frombits(binary.LittleEndian.Uint64(v)))
-	case IPv4Addr:
+	case IPv4AddrArg:
 		// TODO implement me
-	case IPv6Addr:
+	case IPv6AddrArg:
 		// TODO implement me
 	case ArrU8Len4Arg:
 		// TODO implement me
