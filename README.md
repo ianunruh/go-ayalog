@@ -1,6 +1,6 @@
 # go-ayalog
 
-Go library for parsing logs from eBPF programs using [aya-log](https://crates.io/crates/aya-log).
+Go library for parsing logs from [Aya](https://aya-rs.dev/) eBPF programs.
 
 This library has no external dependencies.
 

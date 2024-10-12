@@ -6,6 +6,8 @@ import (
 	"net/netip"
 )
 
+// https://github.com/aya-rs/aya/blob/aya-v0.13.0/aya-log/src/lib.rs
+
 func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 	switch arg {
 	case I8Arg:
@@ -24,13 +26,13 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 		return formatU32Arg(hint, binary.LittleEndian.Uint32(v))
 	case U64Arg, UsizeArg:
 		return formatInt(hint, binary.LittleEndian.Uint64(v))
-	case IPv4Addr:
-		// TODO implement me
-	case IPv6Addr:
-		// TODO implement me
 	case F32Arg:
 		// TODO implement me
 	case F64Arg:
+		// TODO implement me
+	case IPv4Addr:
+		// TODO implement me
+	case IPv6Addr:
 		// TODO implement me
 	case ArrU8Len4Arg:
 		// TODO implement me
@@ -40,10 +42,10 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 		// TODO implement me
 	case ArrU16Len8Arg:
 		// TODO implement me
-	case StrArg:
-		return string(v), nil
 	case BytesArg:
 		// TODO support hex formats
+		return string(v), nil
+	case StrArg:
 		return string(v), nil
 	default:
 		return "", fmt.Errorf("unknown arg tag: %d", arg)
