@@ -3,6 +3,7 @@ package ayalog
 import (
 	"encoding/binary"
 	"fmt"
+	"math"
 	"net/netip"
 )
 
@@ -27,9 +28,9 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 	case U64Arg, UsizeArg:
 		return formatInt(hint, binary.LittleEndian.Uint64(v))
 	case F32Arg:
-		// TODO implement me
+		return formatFloat(hint, math.Float32frombits(binary.LittleEndian.Uint32(v)))
 	case F64Arg:
-		// TODO implement me
+		return formatFloat(hint, math.Float64frombits(binary.LittleEndian.Uint64(v)))
 	case IPv4Addr:
 		// TODO implement me
 	case IPv6Addr:
@@ -43,8 +44,7 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 	case ArrU16Len8Arg:
 		// TODO implement me
 	case BytesArg:
-		// TODO support hex formats
-		return string(v), nil
+		return formatBytes(hint, v)
 	case StrArg:
 		return string(v), nil
 	default:
@@ -62,6 +62,14 @@ func formatU32Arg(hint DisplayHint, v uint32) (string, error) {
 	return formatInt(hint, v)
 }
 
+func formatFloat(hint DisplayHint, v any) (string, error) {
+	switch hint {
+	case DefaultHint:
+		return formatDefault(v), nil
+	}
+	return "", fmt.Errorf("unsupported display hint: %d", hint)
+}
+
 func formatInt(hint DisplayHint, v any) (string, error) {
 	switch hint {
 	case LowerHexHint:
@@ -70,6 +78,16 @@ func formatInt(hint DisplayHint, v any) (string, error) {
 		return formatUpperHex(v), nil
 	case DefaultHint:
 		return formatDefault(v), nil
+	}
+	return "", fmt.Errorf("unsupported display hint: %d", hint)
+}
+
+func formatBytes(hint DisplayHint, v []byte) (string, error) {
+	switch hint {
+	case LowerHexHint:
+		return formatLowerHex(v), nil
+	case UpperHexHint:
+		return formatUpperHex(v), nil
 	}
 	return "", fmt.Errorf("unsupported display hint: %d", hint)
 }
