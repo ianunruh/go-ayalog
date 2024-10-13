@@ -2,7 +2,9 @@
 
 Go library for parsing logs from [Aya](https://aya-rs.dev/) eBPF programs.
 
-This library has no external dependencies.
+This library has no external build dependencies.
+
+This library has been tested with logs emitted from an eBPF program using [aya-ebpf-log v0.1.0](https://crates.io/crates/aya-log-ebpf/0.1.0).
 
 ## Getting started
 

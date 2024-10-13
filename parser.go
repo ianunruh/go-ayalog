@@ -9,6 +9,16 @@ import (
 const numDefaultLogFields = 6
 
 func ParseRecord(buffer *bytes.Buffer) (Record, error) {
+	p := Parser{}
+	return p.Record(buffer)
+}
+
+type Parser struct {
+	// IncludeArgs controls whether each record has individual args populated.
+	IncludeArgs bool
+}
+
+func (p Parser) Record(buffer *bytes.Buffer) (Record, error) {
 	var (
 		record  Record
 		numArgs uint64
@@ -59,6 +69,15 @@ func ParseRecord(buffer *bytes.Buffer) (Record, error) {
 		msg, err := formatArg(tag, lastHint, value)
 		if err != nil {
 			return record, fmt.Errorf("formatting arg %d, tag %d: %w", i, tag, err)
+		}
+
+		if p.IncludeArgs {
+			record.Args = append(record.Args, RecordArg{
+				Type:        tag,
+				DisplayHint: lastHint,
+				Value:       value,
+				Formatted:   msg,
+			})
 		}
 
 		record.Message += msg

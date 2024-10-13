@@ -7,7 +7,7 @@ import (
 	"net/netip"
 )
 
-// https://github.com/aya-rs/aya/blob/aya-v0.13.0/aya-log/src/lib.rs
+// https://github.com/aya-rs/aya/blob/aya-log-v0.2.0/aya-log/src/lib.rs
 
 func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 	switch arg {
@@ -37,10 +37,6 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 		return formatFloat(hint, math.Float32frombits(binary.LittleEndian.Uint32(v)))
 	case F64Arg:
 		return formatFloat(hint, math.Float64frombits(binary.LittleEndian.Uint64(v)))
-	case IPv4AddrArg:
-		// TODO implement me
-	case IPv6AddrArg:
-		// TODO implement me
 	case ArrU8Len4Arg:
 		if len(v) != 4 {
 			return "", fmt.Errorf("expected ArrU8Len4 arg to be exactly 4 bytes: %v", v)
@@ -56,8 +52,6 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 			return "", fmt.Errorf("expected ArrU8Len16 arg to be exactly 16 bytes: %v", v)
 		}
 		return formatArrU8Len16Arg(hint, [16]byte(v))
-	case ArrU16Len8Arg:
-		// TODO implement me
 	case BytesArg:
 		return formatBytes(hint, v)
 	case StrArg:
@@ -65,8 +59,6 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 	default:
 		return "", fmt.Errorf("unknown arg tag: %d", arg)
 	}
-
-	return "", nil
 }
 
 func formatU32Arg(hint DisplayHint, v uint32) (string, error) {

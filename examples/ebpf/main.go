@@ -107,6 +107,8 @@ func main() {
 				log.Fatalf("Failed to read log record: %v", err)
 			}
 
+			// os.WriteFile("../testdata/simple.bin", record.RawSample, 0644)
+
 			r, err := ayalog.ParseRecord(bytes.NewBuffer(record.RawSample))
 			if err != nil {
 				log.Fatalf("Failed to parse log record: %v", err)

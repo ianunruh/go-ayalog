@@ -32,4 +32,19 @@ type Record struct {
 	Line uint32
 
 	Message string
+
+	// Args contains individual arguments and their raw forms.
+	//
+	// This field is only populated when IncludeArgs is set on the Parser.
+	Args []RecordArg
+}
+
+type RecordArg struct {
+	Type Arg
+
+	DisplayHint DisplayHint
+
+	Value []byte
+
+	Formatted string
 }
