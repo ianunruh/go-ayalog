@@ -23,11 +23,11 @@ func TestParseRecord_Simple(t *testing.T) {
 	assert.Equal(t, "xdp_hello", r.Target)
 	assert.Equal(t, "xdp_hello", r.Module)
 	assert.Equal(t, "src/main.rs", r.File)
-	assert.Equal(t, uint32(40), r.Line)
+	assert.Equal(t, uint32(42), r.Line)
 	assert.Equal(t, InfoLevel, r.Level)
-	assert.Equal(t, "SRC: 1.1.1.1, ACTION: DROP", r.Message)
+	assert.Equal(t, "SRC: 1.1.1.1 (22:56:d9:58:18:59), ACTION: DROP", r.Message)
 
-	require.Len(t, r.Args, 3)
+	require.Len(t, r.Args, 5)
 	for _, arg := range r.Args {
 		assert.NotZero(t, arg.Type)
 		assert.NotZero(t, arg.DisplayHint)

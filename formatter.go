@@ -37,11 +37,6 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 		return formatFloat(hint, math.Float32frombits(binary.LittleEndian.Uint32(v)))
 	case F64Arg:
 		return formatFloat(hint, math.Float64frombits(binary.LittleEndian.Uint64(v)))
-	case ArrU8Len4Arg:
-		if len(v) != 4 {
-			return "", fmt.Errorf("expected ArrU8Len4 arg to be exactly 4 bytes: %v", v)
-		}
-		return formatArrU8Len4Arg(hint, [4]byte(v))
 	case ArrU8Len6Arg:
 		if len(v) != 6 {
 			return "", fmt.Errorf("expected ArrU8Len6 arg to be exactly 6 bytes: %v", v)
@@ -52,6 +47,8 @@ func formatArg(arg Arg, hint DisplayHint, v []byte) (string, error) {
 			return "", fmt.Errorf("expected ArrU8Len16 arg to be exactly 16 bytes: %v", v)
 		}
 		return formatArrU8Len16Arg(hint, [16]byte(v))
+	// TODO implement me
+	// case ArrU16Len8Arg:
 	case BytesArg:
 		return formatBytes(hint, v)
 	case StrArg:
@@ -67,14 +64,6 @@ func formatU32Arg(hint DisplayHint, v uint32) (string, error) {
 		return formatIPv4Addr(v), nil
 	}
 	return formatInt(hint, v)
-}
-
-func formatArrU8Len4Arg(hint DisplayHint, v [4]byte) (string, error) {
-	switch hint {
-	case IPHint:
-		return netip.AddrFrom4(v).String(), nil
-	}
-	return "", fmt.Errorf("unsupported display hint: %d", hint)
 }
 
 func formatArrU8Len6Arg(hint DisplayHint, v [6]byte) (string, error) {

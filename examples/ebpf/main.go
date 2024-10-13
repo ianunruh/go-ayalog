@@ -26,6 +26,7 @@ func main() {
 	ifaceName := flag.String("iface", "eth0", "Network interface to attach the program to")
 	objPath := flag.String("obj-path", "../../../xdp-hello/target/bpfel-unknown-none/debug/xdp-hello", "Path to built eBPF object file")
 	blockIP := flag.String("block-ip", "1.1.1.1", "IPv4 addr to block")
+	writePath := flag.String("write-path", "", "Path to write last log record")
 	flag.Parse()
 
 	// Initialize logging
@@ -107,7 +108,11 @@ func main() {
 				log.Fatalf("Failed to read log record: %v", err)
 			}
 
-			// os.WriteFile("../testdata/simple.bin", record.RawSample, 0644)
+			if writePath != nil && *writePath != "" {
+				if err := os.WriteFile(*writePath, record.RawSample, 0644); err != nil {
+					log.Fatalf("Failed to write record to disk: %v", err)
+				}
+			}
 
 			r, err := ayalog.ParseRecord(bytes.NewBuffer(record.RawSample))
 			if err != nil {

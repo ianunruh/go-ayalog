@@ -33,12 +33,12 @@ const (
 	F32Arg
 	F64Arg
 
-	// `[u8; 4]` array which represents an IPv4 address.
-	ArrU8Len4Arg
 	// `[u8; 6]` array which represents a MAC address.
 	ArrU8Len6Arg
 	// `[u8; 16]` array which represents an IPv6 address.
 	ArrU8Len16Arg
+	// `[u16; 8]` array which represents an IPv6 address.
+	ArrU16Len8Arg
 
 	BytesArg
 	StrArg
