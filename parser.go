@@ -8,6 +8,11 @@ import (
 
 const numDefaultLogFields = 6
 
+const (
+	LogLibraryVersion0_1_0 = "0.1.0"
+	LogLibraryVersion0_1_1 = "0.1.1"
+)
+
 func ParseRecord(buffer *bytes.Buffer) (Record, error) {
 	p := Parser{}
 	return p.Record(buffer)
@@ -16,6 +21,10 @@ func ParseRecord(buffer *bytes.Buffer) (Record, error) {
 type Parser struct {
 	// IncludeArgs controls whether each record has individual args populated.
 	IncludeArgs bool
+
+	// LogLibraryVersion is used to determine how to parse the records from
+	// aya-log-ebpf, as the binary format differs between versions.
+	LogLibraryVersion string
 }
 
 func (p Parser) Record(buffer *bytes.Buffer) (Record, error) {
@@ -58,6 +67,8 @@ func (p Parser) Record(buffer *bytes.Buffer) (Record, error) {
 			return record, err
 		}
 
+		tag = p.mapArgTag(tag)
+
 		if tag == DisplayHintArg {
 			if len(value) != 1 {
 				return record, fmt.Errorf("expected display hint arg to be exactly 1 byte: %v", value)
@@ -87,6 +98,17 @@ func (p Parser) Record(buffer *bytes.Buffer) (Record, error) {
 	}
 
 	return record, nil
+}
+
+func (p Parser) mapArgTag(arg Arg) Arg {
+	if p.LogLibraryVersion == LogLibraryVersion0_1_0 {
+		// aya-log-ebpf v0.1.1 introduced 3 new args after F64, which changed the enum
+		// order for the subsequent args.
+		if arg > F64Arg {
+			arg += 3
+		}
+	}
+	return arg
 }
 
 func readField[T ~uint8](buf *bytes.Buffer) (T, []byte, error) {

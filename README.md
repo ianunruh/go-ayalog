@@ -4,7 +4,10 @@ Go library for parsing logs from [Aya](https://aya-rs.dev/) eBPF programs.
 
 This library has no external build dependencies.
 
-This library has been tested with logs emitted from an eBPF program using [aya-ebpf-log v0.1.0](https://crates.io/crates/aya-log-ebpf/0.1.0).
+This library has been tested with logs emitted from an eBPF program using the following library versions.
+
+- [aya-ebpf-log v0.1.0](https://crates.io/crates/aya-log-ebpf/0.1.0)
+- [aya-ebpf-log v0.1.1](https://crates.io/crates/aya-log-ebpf/0.1.1)
 
 ## Getting started
 
@@ -49,4 +52,16 @@ for {
 
     spew.Dump(r)
 }
+```
+
+### Using with aya-log-ebpf v0.1.0
+
+The binary format changed between aya-log-ebpf v0.1.0 and v0.1.1. To use this library with the older binary format, configure the parser.
+
+```go
+parser := ayalog.Parser{
+    LogLibraryVersion: ayalog.LogLibraryVersion0_1_0,
+}
+record, err := parser.Record(bytes.NewBuffer(record.RawSample))
+// ...
 ```

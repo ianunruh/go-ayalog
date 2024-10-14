@@ -1,6 +1,6 @@
 package ayalog
 
-// https://github.com/aya-rs/aya/blob/aya-log-common-v0.1.14/aya-log-common/src/lib.rs
+// https://github.com/aya-rs/aya/blob/aya-log-common-v0.1.15/aya-log-common/src/lib.rs
 
 type Field uint8
 
@@ -33,6 +33,11 @@ const (
 	F32Arg
 	F64Arg
 
+	IPv4AddrArg
+	IPv6AddrArg
+
+	// `[u8; 4]` array which represents an IPv4 address.
+	ArrU8Len4Arg
 	// `[u8; 6]` array which represents a MAC address.
 	ArrU8Len6Arg
 	// `[u8; 16]` array which represents an IPv6 address.

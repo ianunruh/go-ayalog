@@ -9,12 +9,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseRecord_Simple(t *testing.T) {
-	record, err := os.ReadFile("testdata/simple.bin")
+// TODO add test data for v0.1.1
+
+func TestParseRecord_0_1_0(t *testing.T) {
+	record, err := os.ReadFile("testdata/0_1_0.bin")
 	require.NoError(t, err)
 
 	parser := Parser{
-		IncludeArgs: true,
+		IncludeArgs:       true,
+		LogLibraryVersion: LogLibraryVersion0_1_0,
 	}
 
 	r, err := parser.Record(bytes.NewBuffer(record))
